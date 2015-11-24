@@ -47,5 +47,7 @@ public class MainActivity extends ActionBarActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/index.html");
     }
+
+
 }
 
