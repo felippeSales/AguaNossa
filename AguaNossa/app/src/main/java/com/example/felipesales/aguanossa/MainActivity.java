@@ -2,9 +2,11 @@ package com.example.felipesales.aguanossa;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
+import android.webkit.*;
+
 
 
 public class MainActivity extends ActionBarActivity {
@@ -45,7 +47,15 @@ public class MainActivity extends ActionBarActivity {
         WebView webView =  (WebView)findViewById(R.id.webView2);
         //enable JavaScript
         webView.getSettings().setJavaScriptEnabled(true);
+
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
+        }
+
         webView.loadUrl("file:///android_asset/index.html");
+
     }
 
 
