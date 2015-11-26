@@ -3,8 +3,7 @@ package com.example.felipesales.aguanossa;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.os.Build;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.Window;
 import android.webkit.*;
 import android.util.Log;
 
