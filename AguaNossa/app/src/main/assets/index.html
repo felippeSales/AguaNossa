@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/aguanossa.css">
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+    <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
+    <script src="js/liquidFillGauge.js" language="JavaScript"></script>
+    <style>
+        .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
+    </style>
 
 </head>
 
@@ -119,7 +124,10 @@
                                 <h3 class="panel-title">Dados Boqueirão:</h3>
                             </div>
                             <div class="panel-body">
-
+                                
+                                <h4 >Volume atual:</h3>
+                                <svg id="graficoVolume" width="50%" height="250"></svg>
+                                
                             </div>
                         </div>
                     </div>
@@ -206,6 +214,8 @@
     <script src="js/jquery-2.1.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>
+
+    <script src="js/app.js"></script>
 
 
 
