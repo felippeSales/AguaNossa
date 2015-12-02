@@ -17,6 +17,6 @@ app.controller('GraficoVolume', function ($scope, $rootScope, $http) {
         $scope.graficoVolume = response.data[0].volume;
         $scope.chart = loadLiquidFillGauge("graficoVolume", $scope.graficoVolume, $scope.chartConfig);
     })
-    
-    
 });
+
+
