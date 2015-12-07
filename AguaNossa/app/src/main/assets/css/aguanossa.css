@@ -10,3 +10,13 @@
 body {
     background-color: #c3e2ec;
 }
+
+#map-container {
+	padding: 15px;
+}
+
+#map-canvas {
+	height: 400px;
+	margin: 0px;
+	padding: 0px;
+}
