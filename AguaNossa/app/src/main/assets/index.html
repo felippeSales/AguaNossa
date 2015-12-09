@@ -13,13 +13,9 @@
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
     <script src="js/d3.v3.min.js" language="JavaScript"></script>
     <script src="js/liquidFillGauge.js" language="JavaScript"></script>
-    <style>
-        .liquidFillGaugeText {
-            font-family: Helvetica;
-            font-weight: bold;
-        }
-    </style>
-
+    
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
+    
 </head>
 
 <body>
@@ -40,7 +36,7 @@
 
         <div class="container-fluid">
             <div class="row">
-                <img src="img/logo.png" style="max-width: 100%; height: auto;">
+                <img class="logo-banner" src="img/logo.png">
 
             </div>
             <div class="navbar-header">
@@ -103,7 +99,7 @@
                         <div class="col-sm-3">
                             <h5>Volume atual:</h5>
                             <div class="center">
-                                <svg id="graficoVolume" width="100%" style="max-height: 250px;"></svg>
+                                <svg id="graficoVolume" width="100%" ></svg>
                             </div>
                         </div>
                         <div class="col-sm-9">
@@ -166,7 +162,7 @@
 
             </div>
 
-            <div class="col-sm-9 col-xs-12" ng-controller="MapaDeRegistros">
+            <div class="col-sm-9 col-xs-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="input-group ">
@@ -184,8 +180,8 @@
                     
                     <div class="panel-body">
                             
-                        <div id="map-container" class="row">
-                            <div id="map-canvas" style="min-height: 400px;"></div>
+                        <div id="map-container" class="row" ng-controller="MapaDeRegistros">
+                            <div id="map-canvas"></div>
                         </div>
                         
                     </div>
@@ -220,11 +216,9 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>
     <script src="js/angular.min.js"></script>
-    <script src="js/google-maps.js"></script>
-   
 
     <script src="js/app.js"></script>
-
+   
 
     <!-- TWITTER -->
     <script>
