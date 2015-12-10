@@ -7,10 +7,10 @@
     float: right;
 }
 
-body {
-    background-color: #c3e2ec;
-}
 
+body {
+   background-color: #c3e2ec;
+}
 #map-container {
 	padding: 15px;
 }

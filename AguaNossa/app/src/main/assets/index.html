@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/aguanossa.css">
-    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+   
     <script src="js/d3.v3.min.js" language="JavaScript"></script>
     <script src="js/liquidFillGauge.js" language="JavaScript"></script>
 
@@ -35,7 +35,7 @@
     <div class="row">
         <img class="logo-banner" src="img/logo.png">
     </div>
-    
+
     <nav class="navbar navbar-inverse" id="mainnav">
 
         <div class="container-fluid">
@@ -182,25 +182,12 @@
 
                     <div class="panel-body">
 
-                        <div id="map-container" class="row" >
+                        <div id="map-container" class="row">
                             <div id="map-canvas"></div>
                         </div>
 
                     </div>
                     <div class="panel-footer">
-                        <div class="form-inline">
-                            <div id="datetimepicker1" class="form-group input-append date">
-                                De:
-                                <input ng-model="visualizar.data.de" class="form-control" data-format="dd/MM/yyyy" type="text"></input>
-                                <span class="add-on glyphicon glyphicon-calendar"></span>
-                            </div>
-
-                            <div id="datetimepicker2" class="form-group input-append date" style="padding-left: 2px;">
-                                Até:
-                                <input ng-model="visualizar.data.ate" class="form-control" data-format="dd/MM/yyyy" type="text"></input>
-                                <span class="add-on glyphicon glyphicon-calendar"></span>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
@@ -216,8 +203,12 @@
 
     <script src="js/jquery-2.1.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap-datetimepicker.min.js"></script>
-    <script src="js/angular.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <scrpit src="bower_components/angular-messages/angular-messages.min.js"></scrpit>
+    <script src="bower_components/angular-material/angular-material.min.js"></script>
+
 
     <script src="js/app.js"></script>
 
@@ -233,19 +224,6 @@
                 fjs.parentNode.insertBefore(js, fjs);
             }
         }(document, "script", "twitter-wjs");
-    </script>
-
-
-    <!-- Calendar -->
-    <script type="text/javascript">
-        $('#datetimepicker1').datetimepicker({
-            format: 'dd/MM/yyyy',
-            language: 'pt-BR'
-        });
-        $('#datetimepicker2').datetimepicker({
-            format: 'dd/MM/yyyy',
-            language: 'pt-BR'
-        });
     </script>
 
     <!-- Navbar -->

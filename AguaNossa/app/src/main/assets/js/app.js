@@ -1,4 +1,4 @@
-var app = angular.module('AguaNossa', []);
+var app = angular.module('AguaNossa', ['ngMaterial']);
 
 var heatmap;
 var markers = [];
@@ -34,23 +34,25 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
     $scope.faltasDeAgua = 0;
     $scope.vazamentos = 0;
     $scope.notifications = {};
-    $scope.visualizar = {data:{}};
-    
+    $scope.visualizar = {
+        data: {}
+    };
+
     $scope.initialize = function () {
         googleMapsInit();
         setInterval($scope.loadNotifications, UPDATE_INTERVAL);
         $scope.loadNotifications();
-        
+
         $scope.visualizar.vazamentos = true;
         $scope.visualizar.faltasDeAgua = true;
 
     };
-    
-    $scope.loadNotifications = function(){
+
+    $scope.loadNotifications = function () {
         $http.get("https://contribua.org/aguanossa-backend/get_notifications").then(function (response) {
             deleteMarkers();
             $scope.notifications.faltaDeAgua = response.data;
-            
+
             lat_lng_array = [];
 
             for (var i = 0; i < $scope.notifications.faltaDeAgua.length; i++) {
@@ -69,16 +71,25 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
             });
 
             placeDefaultMarkers();
-            
-            
+
             $scope.faltasDeAgua = $scope.notifications.faltaDeAgua.length;
-          
-        })    
-    
+
+        })
+
     }
-    
+
+    $scope.$watch("visualizar.vazamentos",
+        function handle(newValue, oldValue) {
+            if(newValue){
+
+            placeDefaultMarkers();
+
+            }else{ deleteMarkers();}
+        }
+    );
+
     $scope.initialize();
-    
+
 
 });
 
