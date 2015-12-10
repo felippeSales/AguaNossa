@@ -2,10 +2,9 @@ var app = angular.module('AguaNossa', ['ngMaterial']);
 
 var heatmap;
 var markers = [];
-var lat_lng_array = [];
-var notifications = [];
+var lat_lng_array = {faltaDeAgua:[],vazamentos:[]};
 
-var DEFAULT_MARKER_ICON = "img/aguanossa-marker.png";
+var FALTA_MARKER_ICON = "img/aguanossa-marker.png";
 var UPDATE_INTERVAL = 300000;
 
 
@@ -35,7 +34,6 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
     $scope.vazamentos = 0;
     $scope.notifications = {};
     $scope.visualizar = {
-        data: {}
     };
 
     $scope.initialize = function () {
@@ -53,24 +51,24 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
             deleteMarkers();
             $scope.notifications.faltaDeAgua = response.data;
 
-            lat_lng_array = [];
+            lat_lng_array = {faltaDeAgua:[],vazamentos:[]};
 
             for (var i = 0; i < $scope.notifications.faltaDeAgua.length; i++) {
                 var notification = $scope.notifications.faltaDeAgua[i];
                 if (notification.lat_lng == "") {
                     continue;
                 }
-                lat_lng_array.push(processLatAndLng(notification.lat_lng));
+                lat_lng_array.faltaDeAgua.push(processLatAndLng(notification.lat_lng));
             }
 
-            var pointArray = new google.maps.MVCArray(lat_lng_array);
+            var pointArray = new google.maps.MVCArray(lat_lng_array.faltaDeAgua);
 
             heatmap = new google.maps.visualization.HeatmapLayer({
                 data: pointArray,
                 radius: 30
             });
 
-            placeDefaultMarkers();
+            placeFaltaMarkers();
 
             $scope.faltasDeAgua = $scope.notifications.faltaDeAgua.length;
 
@@ -78,11 +76,11 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
 
     }
 
-    $scope.$watch("visualizar.vazamentos",
+    $scope.$watch("visualizar.faltasDeAgua",
         function handle(newValue, oldValue) {
             if(newValue){
 
-            placeDefaultMarkers();
+            placeFaltaMarkers();
 
             }else{ deleteMarkers();}
         }
@@ -185,7 +183,7 @@ function toggleHeatmap() {
         heatmap.setMap(map);
     } else {
         heatmap.setMap(null);
-        placeDefaultMarkers();
+        placeFaltaMarkers();
     }
 }
 
@@ -193,7 +191,7 @@ function toggleCirclemap() {
     heatmap.setMap(null);
     if (markers.length != 0 && markers[0].type == "circle") {
         deleteMarkers();
-        placeDefaultMarkers();
+        placeFaltaMarkers();
     } else {
         deleteMarkers();
         placeCircles();
@@ -207,29 +205,10 @@ function processLatAndLng(stringLatAndLng) {
     return new google.maps.LatLng(lat, lng);
 }
 
-function placeDefaultMarkers() {
-    for (var i = 0; i < lat_lng_array.length; i++) {
-        markers.push(placeDefaultMarker(lat_lng_array[i]));
-    }
-}
-
 function placeCircles() {
-    for (var i = 0; i < lat_lng_array.length; i++) {
-        markers.push(placeCircle(lat_lng_array[i]));
+    for (var i = 0; i < lat_lng_array.faltaDeAgua.length; i++) {
+        markers.push(placeCircle(lat_lng_array.faltaDeAgua[i]));
     }
-}
-
-function placeDefaultMarker(location) {
-    var marker = new google.maps.Marker({
-        position: location,
-        draggable: false,
-        map: map,
-        //animation: google.maps.Animation.DROP,
-        icon: DEFAULT_MARKER_ICON,
-        //title : "Hello World!"
-        type: "default"
-    });
-    return marker;
 }
 
 function placeCircle(location) {
@@ -245,6 +224,44 @@ function placeCircle(location) {
         type: "circle"
     };
     return new google.maps.Circle(circulo);
+}
+
+function placeVazamentoMarkers() {
+    for (var i = 0; i < lat_lng_array.length; i++) {
+        markers.push(placeDefaultMarker(lat_lng_array.vazamentos[i]));
+    }
+}
+
+function placeFaltaMarkers() {
+    for (var i = 0; i < lat_lng_array.faltaDeAgua.length; i++) {
+        markers.push(placeFaltaMarker(lat_lng_array.faltaDeAgua[i]));
+    }
+}
+
+function placeFaltaMarker(location) {
+    var marker = new google.maps.Marker({
+        position: location,
+        draggable: false,
+        map: map,
+        //animation: google.maps.Animation.DROP,
+        icon: FALTA_MARKER_ICON,
+        //title : "Hello World!"
+        type: "default"
+    });
+    return marker;
+}
+
+function placeVazamentoMarker(location) {
+    var marker = new google.maps.Marker({
+        position: location,
+        draggable: false,
+        map: map,
+        //animation: google.maps.Animation.DROP,
+        icon: VAZAMENTO_MARKER_ICON,
+        //title : "Hello World!"
+        type: "default"
+    });
+    return marker;
 }
 
 function setAllMap(map) {
