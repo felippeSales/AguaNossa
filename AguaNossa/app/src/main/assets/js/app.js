@@ -25,24 +25,58 @@ app.controller('GraficoVolume', function ($scope, $rootScope, $http) {
             $scope.graficoVolume = response.data[0].volume;
             $scope.chart = loadLiquidFillGauge("graficoVolume", $scope.graficoVolume, $scope.chartConfig);
         })
-    
+
 });
 
 
 app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
-    
-    $http.get("https://contribua.org/aguanossa-backend/get_notifications")
-        .then(function (response) {})
+
+    $scope.faltasDeAgua = 0;
+    $scope.vazamentos = 0;
+    $scope.notifications = {};
+    $scope.visualizar = {data:{}};
     
     $scope.initialize = function () {
-        googleMapsInit($scope);
-        loadNotifications();
-        console.log("test");
-        setInterval(loadNotifications, UPDATE_INTERVAL);
+        googleMapsInit();
+        setInterval($scope.loadNotifications, UPDATE_INTERVAL);
+        $scope.loadNotifications();
+        
+        $scope.visualizar.vazamentos = true;
+        $scope.visualizar.faltasDeAgua = true;
 
     };
+    
+    $scope.loadNotifications = function(){
+        $http.get("https://contribua.org/aguanossa-backend/get_notifications").then(function (response) {
+            deleteMarkers();
+            $scope.notifications.faltaDeAgua = response.data;
+            
+            lat_lng_array = [];
 
+            for (var i = 0; i < $scope.notifications.faltaDeAgua.length; i++) {
+                var notification = $scope.notifications.faltaDeAgua[i];
+                if (notification.lat_lng == "") {
+                    continue;
+                }
+                lat_lng_array.push(processLatAndLng(notification.lat_lng));
+            }
 
+            var pointArray = new google.maps.MVCArray(lat_lng_array);
+
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                data: pointArray,
+                radius: 30
+            });
+
+            placeDefaultMarkers();
+            
+            
+            $scope.faltasDeAgua = $scope.notifications.faltaDeAgua.length;
+          
+        })    
+    
+    }
+    
     $scope.initialize();
     
 
@@ -131,36 +165,6 @@ function CircleMapControl(controlDiv, map) {
     // Chicago
     google.maps.event.addDomListener(controlUI, 'click', function () {
         toggleCirclemap();
-    });
-}
-
-function loadNotifications() {
-    $.ajax({
-        url: 'https://contribua.org/aguanossa-backend/get_notifications',
-        success: function (data) {
-            deleteMarkers();
-            notifications = $.parseJSON(data);
-
-            lat_lng_array = [];
-
-            for (var i = 0; i < notifications.length; i++) {
-                var notification = notifications[i];
-                if (notification.lat_lng == "") {
-                    continue;
-                }
-                lat_lng_array.push(processLatAndLng(notification.lat_lng));
-            }
-
-            var pointArray = new google.maps.MVCArray(lat_lng_array);
-
-            heatmap = new google.maps.visualization.HeatmapLayer({
-                data: pointArray,
-                radius: 30
-            });
-
-            placeDefaultMarkers();
-            //$("#notification-counter").text(lat_lng_array.length);
-        }
     });
 }
 

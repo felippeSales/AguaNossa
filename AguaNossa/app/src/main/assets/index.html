@@ -115,7 +115,7 @@
 
         </div>
 
-        <div class="row">
+        <div class="row" ng-controller="MapaDeRegistros">
 
 
             <div class="col-sm-3 col-xs-10">
@@ -147,13 +147,13 @@
                             <tbody>
                                 <tr class="info">
                                     <td>Faltas de Água:</td>
-                                    <td>X</td>
+                                    <td>{{faltasDeAgua}}</td>
                                     <td><a href="https://docs.google.com/forms/d/1l5rtDV_j4lWIs4e-k2GsOqCIVjX5JbAYArhBgckHpw8/viewform?edit_requested=true" class="btn btn-info btn-xs">Contribua</a></td>
                                 </tr>
 
                                 <tr class="info">
                                     <td>Vazamentos:</td>
-                                    <td>X</td>
+                                    <td>{{vazamentos}}</td>
                                     <td><a href="https://docs.google.com/forms/d/1v0n4H-u-K9EgPMaY8AUWMtKng56Sy6cZF8Z3Crlessc/viewform" class="btn btn-info btn-xs">Contribua</a></td>
                                 </tr>
                         </table>
@@ -170,11 +170,11 @@
                         <div class="input-group ">
                             <div class="checkbox badge">
                                 <label>
-                                    <input type="checkbox" checked> Vazamentos
+                                    <input ng-model="visualizar.vazamentos" type="checkbox"> Vazamentos
                                 </label>
 
                                 <label>
-                                    <input type="checkbox" checked> Faltas de Água
+                                    <input ng-model="visualizar.faltasDeAgua" type="checkbox"> Faltas de Água
                                 </label>
                             </div>
                         </div>
@@ -182,7 +182,7 @@
 
                     <div class="panel-body">
 
-                        <div id="map-container" class="row" ng-controller="MapaDeRegistros">
+                        <div id="map-container" class="row" >
                             <div id="map-canvas"></div>
                         </div>
 
@@ -191,13 +191,13 @@
                         <div class="form-inline">
                             <div id="datetimepicker1" class="form-group input-append date">
                                 De:
-                                <input class="form-control" data-format="dd/MM/yyyy" type="text"></input>
+                                <input ng-model="visualizar.data.de" class="form-control" data-format="dd/MM/yyyy" type="text"></input>
                                 <span class="add-on glyphicon glyphicon-calendar"></span>
                             </div>
 
                             <div id="datetimepicker2" class="form-group input-append date" style="padding-left: 2px;">
                                 Até:
-                                <input class="form-control" data-format="dd/MM/yyyy" type="text"></input>
+                                <input ng-model="visualizar.data.ate" class="form-control" data-format="dd/MM/yyyy" type="text"></input>
                                 <span class="add-on glyphicon glyphicon-calendar"></span>
                             </div>
                         </div>
