@@ -1,12 +1,18 @@
-var app = angular.module('AguaNossa', ['ngMaterial']);
+var app = angular.module('AguaNossa', ['angularSpinner']);
 
 var heatmap;
 var markers = [];
-var lat_lng_array = {faltaDeAgua:[],vazamentos:[]};
+var lat_lng_array = {
+    faltaDeAgua: [],
+    vazamentos: []
+};
 
 var FALTA_MARKER_ICON = "img/aguanossa-marker.png";
 var UPDATE_INTERVAL = 300000;
 
+app.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
+    usSpinnerConfigProvider.setTheme('bigBlue', {color: 'white', radius: 15, lines: 15, length: 20});
+}]);
 
 app.controller('GraficoVolume', function ($scope, $rootScope, $http) {
     $scope.graficoVolume = 0.0;
@@ -33,8 +39,8 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
     $scope.faltasDeAgua = 0;
     $scope.vazamentos = 0;
     $scope.notifications = {};
-    $scope.visualizar = {
-    };
+    $scope.visualizar = {};
+    $rootScope.isLoading = false;
 
     $scope.initialize = function () {
         googleMapsInit();
@@ -47,11 +53,16 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
     };
 
     $scope.loadNotifications = function () {
-        $http.get("https://contribua.org/aguanossa-backend/get_notifications").then(function (response) {
-            deleteMarkers();
-            $scope.notifications.faltaDeAgua = response.data;
+        $rootScope.isLoading = true;
+        deleteMarkers();
+        lat_lng_array = {
+            faltaDeAgua: [],
+            vazamentos: []
+        };
 
-            lat_lng_array = {faltaDeAgua:[],vazamentos:[]};
+        $http.get("https://contribuatestes.lsd.ufcg.edu.br/aguanossa-backend/get_notifications").then(function (response) {
+
+            $scope.notifications.faltaDeAgua = response.data;
 
             for (var i = 0; i < $scope.notifications.faltaDeAgua.length; i++) {
                 var notification = $scope.notifications.faltaDeAgua[i];
@@ -72,17 +83,59 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
 
             $scope.faltasDeAgua = $scope.notifications.faltaDeAgua.length;
 
-        })
+        });
+
+        $http.get("https://contribuatestes.lsd.ufcg.edu.br/aguanossa-backend/get_notifications_vazamentos").then(function (response) {
+
+            $scope.notifications.vazamentos = response.data;
+
+            for (var i = 0; i < $scope.notifications.vazamentos.length; i++) {
+                var notification = $scope.notifications.vazamentos[i];
+                if (notification.lat_lng == "") {
+                    continue;
+                }
+                lat_lng_array.vazamentos.push(processLatAndLng(notification.lat_lng));
+            }
+
+            placeVazamentoMarkers();
+
+            $scope.vazamentos = $scope.notifications.vazamentos.length;
+            
+            $rootScope.isLoading = false;
+
+        });
+        
+        
+
+
 
     }
 
     $scope.$watch("visualizar.faltasDeAgua",
         function handle(newValue, oldValue) {
-            if(newValue){
+            if (newValue) {
+                placeFaltaMarkers();
 
-            placeFaltaMarkers();
+            } else {
+                deleteMarkers();
+                if($scope.visualizar.vazamentos){
+                    placeVazamentoMarkers();
+                }
+            }
+        }
+    );
+    
+    $scope.$watch("visualizar.vazamentos",
+        function handle(newValue, oldValue) {
+            if (newValue) {
+                placeVazamentoMarkers();
 
-            }else{ deleteMarkers();}
+            } else {
+                deleteMarkers();
+                if($scope.visualizar.faltasDeAgua){
+                    placeFaltaMarkers();
+                }
+            }
         }
     );
 
@@ -102,15 +155,15 @@ function googleMapsInit() {
         mapOptions);
 
     var showHeatMap = document.createElement('div');
-    var homeControl = new HeatMapControl(showHeatMap, map);
+    //var homeControl = new HeatMapControl(showHeatMap, map);
     var showCircleMap = document.createElement('div');
-    var circleControl = new CircleMapControl(showCircleMap, map);
+    //var circleControl = new CircleMapControl(showCircleMap, map);
 
     showHeatMap.index = 1;
     showCircleMap.index = 1;
 
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(showCircleMap);
-    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(showHeatMap);
+    // map.controls[google.maps.ControlPosition.TOP_RIGHT].push(showCircleMap);
+    //map.controls[google.maps.ControlPosition.TOP_RIGHT].push(showHeatMap);
 }
 
 function HeatMapControl(controlDiv, map) {
@@ -184,6 +237,7 @@ function toggleHeatmap() {
     } else {
         heatmap.setMap(null);
         placeFaltaMarkers();
+        placeVazamentoMarkers();
     }
 }
 
@@ -227,8 +281,8 @@ function placeCircle(location) {
 }
 
 function placeVazamentoMarkers() {
-    for (var i = 0; i < lat_lng_array.length; i++) {
-        markers.push(placeDefaultMarker(lat_lng_array.vazamentos[i]));
+    for (var i = 0; i < lat_lng_array.vazamentos.length; i++) {
+        markers.push(placeVazamentoMarker(lat_lng_array.vazamentos[i]));
     }
 }
 
@@ -248,16 +302,18 @@ function placeFaltaMarker(location) {
         //title : "Hello World!"
         type: "default"
     });
+
     return marker;
 }
 
 function placeVazamentoMarker(location) {
+
     var marker = new google.maps.Marker({
         position: location,
         draggable: false,
         map: map,
         //animation: google.maps.Animation.DROP,
-        icon: VAZAMENTO_MARKER_ICON,
+        //icon: DEFAULT_MARKER_ICON,
         //title : "Hello World!"
         type: "default"
     });
