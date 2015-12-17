@@ -8,10 +8,10 @@ var lat_lng_array = {
 };
 
 var FALTA_MARKER_ICON = "img/aguanossa-marker.png";
-var UPDATE_INTERVAL = 300000;
+var UPDATE_INTERVAL = 10000;
 
 app.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
-    usSpinnerConfigProvider.setTheme('bigBlue', {color: 'white', radius: 15, lines: 15, length: 20});
+    usSpinnerConfigProvider.setTheme('bigWhite', {color: 'white', radius: 15, lines: 15, length: 20});
 }]);
 
 app.controller('GraficoVolume', function ($scope, $rootScope, $http) {
@@ -40,7 +40,7 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
     $scope.vazamentos = 0;
     $scope.notifications = {};
     $scope.visualizar = {};
-    $rootScope.isLoading = false;
+    $rootScope.isLoading = true;
 
     $scope.initialize = function () {
         googleMapsInit();
@@ -53,7 +53,6 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
     };
 
     $scope.loadNotifications = function () {
-        $rootScope.isLoading = true;
         deleteMarkers();
         lat_lng_array = {
             faltaDeAgua: [],
