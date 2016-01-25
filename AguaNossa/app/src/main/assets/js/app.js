@@ -25,7 +25,7 @@ app.controller('GraficoVolume', function ($scope, $rootScope, $http) {
     $scope.chartConfig.waveAnimateTime = 1500;
     $scope.chartConfig.waveCount = 3;
 
-    $http.get("http://aguaeco-celiobarros.rhcloud.com/volume_boqueirao")
+    $http.get("https://aguaeco-celiobarros.rhcloud.com/volume_boqueirao")
         .then(function (response) {
             $scope.graficoVolume = response.data[0].volume;
             $scope.chart = loadLiquidFillGauge("graficoVolume", $scope.graficoVolume, $scope.chartConfig);

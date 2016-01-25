@@ -20,7 +20,7 @@ import android.content.Intent;
 public class MainActivity extends Activity {
 
     /* URL saved to be loaded after fb login */
-    private static final String target_url="file:///android_asset/index.html";
+    private static final String target_url="http://felippesales.github.io/";
     private static final String target_url_prefix="www.example.com";
     private Context mContext;
     private WebView mWebview;
