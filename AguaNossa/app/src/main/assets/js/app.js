@@ -24,11 +24,13 @@ app.controller('GraficoVolume', function ($scope, $rootScope, $http) {
     $scope.chartConfig.textVertPosition = 0.5;
     $scope.chartConfig.waveAnimateTime = 1500;
     $scope.chartConfig.waveCount = 3;
+    $rootScope.isLoadingVolume = true;
 
-    $http.get("https://aguaeco-celiobarros.rhcloud.com/volume_boqueirao")
+    $http.get("https://contribuatestes.lsd.ufcg.edu.br/aguanossa-backend/get_volume_boqueirao")
         .then(function (response) {
-            $scope.graficoVolume = response.data[0].volume;
+            $scope.graficoVolume = response.data;
             $scope.chart = loadLiquidFillGauge("graficoVolume", $scope.graficoVolume, $scope.chartConfig);
+            $rootScope.isLoadingVolume = false;
         })
 
 });
@@ -40,7 +42,7 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
     $scope.vazamentos = 0;
     $scope.notifications = {};
     $scope.visualizar = {};
-    $rootScope.isLoading = true;
+    $rootScope.isLoadingNotifications = true;
 
     $scope.initialize = function () {
         googleMapsInit();
@@ -100,14 +102,9 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
 
             $scope.vazamentos = $scope.notifications.vazamentos.length;
             
-            $rootScope.isLoading = false;
+            $rootScope.isLoadingNotifications = false;
 
         });
-        
-        
-
-
-
     }
 
     $scope.$watch("visualizar.faltasDeAgua",
@@ -139,7 +136,6 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
     );
 
     $scope.initialize();
-
 
 });
 
