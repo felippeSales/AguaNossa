@@ -8,6 +8,7 @@ var lat_lng_array = {
 };
 
 var FALTA_MARKER_ICON = "img/aguanossa-marker.png";
+var VAZAMENTO_MARKER_ICON = "img/vazamento-marker.png";
 var UPDATE_INTERVAL = 10000;
 
 app.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
@@ -308,7 +309,7 @@ function placeVazamentoMarker(location) {
         draggable: false,
         map: map,
         //animation: google.maps.Animation.DROP,
-        //icon: DEFAULT_MARKER_ICON,
+        icon: VAZAMENTO_MARKER_ICON,
         //title : "Hello World!"
         type: "default"
     });
