@@ -302,7 +302,7 @@ var makeAreaPlot2 = function (thedata) {
 
 
 var dataset = []
-d3.csv("../data/boqueirao-porsemana.csv", function(error, data){
+d3.csv("http://felippesales.github.io/data/boqueirao-porsemana.csv", function(error, data){
     if(error){
         throw error;
     } else {
