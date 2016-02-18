@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.os.Build;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -46,6 +47,8 @@ public class MainActivity extends Activity {
         webSettings.setAppCacheEnabled(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setSupportMultipleWindows(true);
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
         mWebview.setWebViewClient(new UriWebViewClient());
         mWebview.setWebChromeClient(new UriChromeClient());
         mWebview.loadUrl(target_url);
@@ -54,41 +57,38 @@ public class MainActivity extends Activity {
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // Check if the key event was the Back button and if there's history
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
+            mWebview.loadUrl(target_url);
+            return true;
+        }
+        // If it wasn't the Back key or there's no web page history, bubble up to the default
+        // system behavior (probably exit the activity)
+        return super.onKeyDown(keyCode, event);
+    }
+
 
     private class UriWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            String host = Uri.parse(url).getHost();
-            //Log.d("shouldOverrideUrlLoading", url);
-            if (host.equals(target_url_prefix))
-            {
-                // This is my web site, so do not override; let my WebView load
-                // the page
-                if(mWebviewPop!=null)
-                {
-                    mWebviewPop.setVisibility(View.GONE);
-                    mContainer.removeView(mWebviewPop);
-                    mWebviewPop=null;
-                }
-                return false;
-            }
+            if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
+                Log.d("URl error", url);
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 
-            if(host.equals("m.facebook.com"))
-            {
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                view.getContext().startActivity(i);
+                return true;
+            } else {
                 return false;
             }
-            // Otherwise, the link is not for a page on my site, so launch
-            // another Activity that handles URLs
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-            return true;
         }
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler,
                                        SslError error) {
-            Log.d("onReceivedSslError", "onReceivedSslError");
-            //super.onReceivedSslError(view, handler, error);
+            handler.proceed(); // Ignore SSL certificate errors
         }
     }
 
