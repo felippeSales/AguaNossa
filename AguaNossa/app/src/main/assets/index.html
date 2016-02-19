@@ -9,11 +9,10 @@
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/aguanossa.css">
-    <link rel="stylesheet" href="css/graficoVolumePorAno.css" >
-   
+    <link rel="stylesheet" href="css/graficoVolumePorAno.css">
+
     <script src="js/d3.v3.min.js" language="JavaScript"></script>
     <script src="js/liquidFillGauge.js" language="JavaScript"></script>
-
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
 
 </head>
@@ -37,58 +36,38 @@
         <img class="logo-banner" src="img/logo.png">
     </div>
 
-    <!--
-        <nav class="navbar navbar-inverse" id="mainnav">
-
-            <div class="container-fluid">
-
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#"></a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                        <li><a href="#">Link</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Link</a></li>
-                    </ul>
-                </div>
+    <nav class="navbar navbar-inverse" id="mainnav">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"></a>
             </div>
-        </nav>
 
-        <div class="spinner"  ng-show="isLoading">
-            <span us-spinner spinner-theme="bigWhite"></span>
-            <p style="margin-top: 40px;"><b>Conectando...</b></p>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home
+                        </a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Sobre</a></li>
+                </ul>
+            </div>
         </div>
+    </nav>
+    
+    <div class="spinner" ng-hide="isOn">
+        <span us-spinner spinner-theme="bigWhite"></span>
+        <p style="margin-top: 40px;"><b>Conectando...</b></p>
+    </div>
 
-        <div class="container" ng-hide="isLoading">-->
-    <div class="container">
+    <div class="container" ng-show="isOn">
+
+        <!-- <div class="container">-->
         <div class="row">
             <div class="container">
 
@@ -113,7 +92,7 @@
                         <div class="col-sm-9 col-xs-12">
                             <h5>Porcentagem ao longo dos anos:</h5>
                             <div id="graficoAnos" class="center">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -199,11 +178,11 @@
 
                 </div>
                 <!--
-                <center>
-                    <div class="col-xs-12 well">
-                        <div class="fb-comments" data-href="https://contribua.org/aguanossa/" data-numposts="5"></div>
-                    </div>
-                </center>-->
+            <center>
+                <div class="col-xs-12 well">
+                    <div class="fb-comments" data-href="https://contribua.org/aguanossa/" data-numposts="5"></div>
+                </div>
+            </center>-->
             </div>
         </div>
 
@@ -213,12 +192,12 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <!--
-    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
-    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
-    <scrpit src="bower_components/angular-messages/angular-messages.min.js"></scrpit>
-    <script src="bower_components/angular-material/angular-material.min.js"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+<scrpit src="bower_components/angular-messages/angular-messages.min.js"></scrpit>
+<script src="bower_components/angular-material/angular-material.min.js"></script>
 -->
-    
+
     <script src="bower_components/spin.js/spin.js"></script>
     <script src="bower_components/angular-spinner/angular-spinner.js"></script>
     <script src="js/graficoVolumePorAno.js"></script>
@@ -226,37 +205,37 @@
     <script src="js/app.js"></script>
 
 
-        <!-- TWITTER -->
-        <script>
-            ! function (d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (!d.getElementById(id)) {
-                    js = d.createElement(s);
-                    js.id = id;
-                    js.src = "js/widgets.js";
-                    fjs.parentNode.insertBefore(js, fjs);
-                }
-            }(document, "script", "twitter-wjs");
-        </script>
+    <!-- TWITTER -->
+    <script>
+        ! function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (!d.getElementById(id)) {
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "js/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }
+        }(document, "script", "twitter-wjs");
+    </script>
 
-        <!-- Navbar
+    <!-- Navbar
 
-        <script>
-            $(document).ready(function () {
-                var navpos = $('#mainnav').offset();
-                console.log(navpos.top);
-                $(window).bind('scroll', function () {
-                    if ($(window).scrollTop() > navpos.top) {
-                        $('#mainnav').addClass('navbar-fixed-top');
-                    } else {
-                        $('#mainnav').removeClass('navbar-fixed-top');
-                    }
-                });
-            });
-        </script>
+<script>
+    $(document).ready(function () {
+        var navpos = $('#mainnav').offset();
+        console.log(navpos.top);
+        $(window).bind('scroll', function () {
+            if ($(window).scrollTop() > navpos.top) {
+                $('#mainnav').addClass('navbar-fixed-top');
+            } else {
+                $('#mainnav').removeClass('navbar-fixed-top');
+            }
+        });
+    });
+</script>
 
 
-    -->
+-->
 
 </body>
 

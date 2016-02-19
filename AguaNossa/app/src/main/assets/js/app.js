@@ -12,7 +12,12 @@ var VAZAMENTO_MARKER_ICON = "img/vazamento-marker.png";
 var UPDATE_INTERVAL = 10000;
 
 app.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
-    usSpinnerConfigProvider.setTheme('bigWhite', {color: 'white', radius: 15, lines: 15, length: 20});
+    usSpinnerConfigProvider.setTheme('bigWhite', {
+        color: 'white',
+        radius: 15,
+        lines: 15,
+        length: 20
+    });
 }]);
 
 app.controller('GraficoVolume', function ($scope, $rootScope, $http) {
@@ -25,13 +30,12 @@ app.controller('GraficoVolume', function ($scope, $rootScope, $http) {
     $scope.chartConfig.textVertPosition = 0.5;
     $scope.chartConfig.waveAnimateTime = 1500;
     $scope.chartConfig.waveCount = 3;
-    $rootScope.isLoadingVolume = true;
 
     $http.get("https://contribuatestes.lsd.ufcg.edu.br/aguanossa-backend/get_volume_boqueirao")
         .then(function (response) {
             $scope.graficoVolume = response.data;
             $scope.chart = loadLiquidFillGauge("graficoVolume", $scope.graficoVolume, $scope.chartConfig);
-            $rootScope.isLoadingVolume = false;
+
         })
 
 });
@@ -43,19 +47,25 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
     $scope.vazamentos = 0;
     $scope.notifications = {};
     $scope.visualizar = {};
-    $rootScope.isLoadingNotifications = true;
+    $rootScope.isOn = true;
 
     $scope.initialize = function () {
-        googleMapsInit();
+
         setInterval($scope.loadNotifications, UPDATE_INTERVAL);
         $scope.loadNotifications();
 
+        if ($rootScope.isOn) {
+            googleMapsInit();
+        }
+
         $scope.visualizar.vazamentos = true;
         $scope.visualizar.faltasDeAgua = true;
-
     };
 
     $scope.loadNotifications = function () {
+
+        $scope.checkConnection();
+
         deleteMarkers();
         lat_lng_array = {
             faltaDeAgua: [],
@@ -81,7 +91,9 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
                 radius: 30
             });
 
-            placeFaltaMarkers();
+            if ($scope.visualizar.faltasDeAgua) {
+                placeFaltaMarkers();
+            }
 
             $scope.faltasDeAgua = $scope.notifications.faltaDeAgua.length;
 
@@ -99,14 +111,37 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
                 lat_lng_array.vazamentos.push(processLatAndLng(notification.lat_lng));
             }
 
-            placeVazamentoMarkers();
+            if ($scope.visualizar.vazamentos) {
+                placeVazamentoMarkers();
+            }
 
             $scope.vazamentos = $scope.notifications.vazamentos.length;
-            
-            $rootScope.isLoadingNotifications = false;
+
+            //$scope.isLoadingVazamentos = false;
 
         });
+
     }
+
+    $scope.checkConnection = function () {
+
+        $http.get("https://contribuatestes.lsd.ufcg.edu.br/aguanossa-backend/get_volume_boqueirao").
+        then(function (response) {
+            if ((response.status >= 200) && (response.status <= 304)) {
+                $rootScope.isOn = true;
+            } else {
+                $rootScope.isOn = false;
+            }
+        }, function (response) {
+            $rootScope.isOn = false;
+        })
+    }
+
+    $rootScope.$watch("isOn", function handle(newValue, oldValue) {
+        if (newValue && (!oldValue)) {
+            location.reload();
+        }
+    });
 
     $scope.$watch("visualizar.faltasDeAgua",
         function handle(newValue, oldValue) {
@@ -115,13 +150,13 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
 
             } else {
                 deleteMarkers();
-                if($scope.visualizar.vazamentos){
+                if ($scope.visualizar.vazamentos) {
                     placeVazamentoMarkers();
                 }
             }
         }
     );
-    
+
     $scope.$watch("visualizar.vazamentos",
         function handle(newValue, oldValue) {
             if (newValue) {
@@ -129,7 +164,7 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
 
             } else {
                 deleteMarkers();
-                if($scope.visualizar.faltasDeAgua){
+                if ($scope.visualizar.faltasDeAgua) {
                     placeFaltaMarkers();
                 }
             }
@@ -139,7 +174,6 @@ app.controller('MapaDeRegistros', function ($scope, $rootScope, $http) {
     $scope.initialize();
 
 });
-
 
 function googleMapsInit() {
     var mapOptions = {
