@@ -50,8 +50,7 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home
-                        </a></li>
+                    <li class="active"><a href="#">Volume</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Sobre</a></li>
@@ -59,18 +58,15 @@
             </div>
         </div>
     </nav>
-    
+
     <div class="spinner" ng-hide="isOn">
         <span us-spinner spinner-theme="bigWhite"></span>
         <p style="margin-top: 40px;"><b>Conectando...</b></p>
     </div>
 
     <div class="container" ng-show="isOn">
-
-        <!-- <div class="container">-->
         <div class="row">
             <div class="container">
-
                 <h2><center>Bem vindo ao Água Nossa!</center></h2>
                 <p class="well">Esta página foi desenvolvida como parte da pesquisa “Análise da Injustiça Ambiental no Abastecimento de Água em Espaços Urbanos”, desenvolvida no Programa de Pós-graduação em Recursos Naturais, com o apoio do Laboratório de Sistemas Distribuídos – LSD, da Unidade Acadêmica de Ciências da Computação, ambos da UFCG.
                 </p>
@@ -102,8 +98,6 @@
         </div>
 
         <div class="row" ng-controller="MapaDeRegistros">
-
-
             <div class="col-sm-3 col-xs-10">
 
                 <!-- Facebook Badge START -->
@@ -177,12 +171,6 @@
                     </div>
 
                 </div>
-                <!--
-            <center>
-                <div class="col-xs-12 well">
-                    <div class="fb-comments" data-href="https://contribua.org/aguanossa/" data-numposts="5"></div>
-                </div>
-            </center>-->
             </div>
         </div>
 
@@ -191,18 +179,13 @@
     <script src="js/jquery-2.1.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
-    <!--
-<script src="bower_components/angular-animate/angular-animate.min.js"></script>
-<script src="bower_components/angular-aria/angular-aria.min.js"></script>
-<scrpit src="bower_components/angular-messages/angular-messages.min.js"></scrpit>
-<script src="bower_components/angular-material/angular-material.min.js"></script>
--->
-
     <script src="bower_components/spin.js/spin.js"></script>
     <script src="bower_components/angular-spinner/angular-spinner.js"></script>
     <script src="js/graficoVolumePorAno.js"></script>
 
     <script src="js/app.js"></script>
+
+    <script src="js/controllers.js"></script>
 
 
     <!-- TWITTER -->
@@ -217,26 +200,6 @@
             }
         }(document, "script", "twitter-wjs");
     </script>
-
-    <!-- Navbar
-
-<script>
-    $(document).ready(function () {
-        var navpos = $('#mainnav').offset();
-        console.log(navpos.top);
-        $(window).bind('scroll', function () {
-            if ($(window).scrollTop() > navpos.top) {
-                $('#mainnav').addClass('navbar-fixed-top');
-            } else {
-                $('#mainnav').removeClass('navbar-fixed-top');
-            }
-        });
-    });
-</script>
-
-
--->
-
 </body>
 
 </html>
