@@ -140,7 +140,6 @@ var makeAreaPlot = function (thedata) {
     }
 }
 
-
 var makeAreaPlot2 = function (thedata) {
     var parseDate = d3.time.format("%Y-%m-%d").parse;
 
@@ -300,18 +299,19 @@ var makeAreaPlot2 = function (thedata) {
 }
 
 
+function gerarGraficoVolumes(){
+    var dataset = []
+    d3.csv("http://felippesales.github.io/data/boqueirao-porsemana.csv", function(error, data){
+        if(error){
+            throw error;
+        } else {
+            dataset = data;
+            removeLoadingMsg();
+            makeAreaPlot2(dataset);
+        }
+    })
 
-var dataset = []
-d3.csv("http://felippesales.github.io/data/boqueirao-porsemana.csv", function(error, data){
-    if(error){
-        throw error;
-    } else {
-        dataset = data;
-        removeLoadingMsg();
-        makeAreaPlot2(dataset);
+    for(var i = 0; i < 25; i++){
+        dataset.push(Math.random() * 30)
     }
-})
-
-for(var i = 0; i < 25; i++){
-    dataset.push(Math.random() * 30)
 }
