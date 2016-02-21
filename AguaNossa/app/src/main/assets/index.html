@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/aguanossa.css">
     <link rel="stylesheet" href="css/graficoVolumePorAno.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
 
     <script src="js/d3.v3.min.js" language="JavaScript"></script>
     <script src="js/liquidFillGauge.js" language="JavaScript"></script>
@@ -19,19 +20,6 @@
 
 <body ng-controller="Main">
 
-    <div id="fb-root"></div>
-
-    <script>
-        ! function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s);
-            js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk');
-    </script>
-
     <div class="row">
         <img class="logo-banner" src="img/logo.png">
     </div>
@@ -40,23 +28,21 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                    <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"></a>
+                <a ui-sref-active="active" class="navbar-brand"><i  ui-sref="volume" class="fa fa-tint fa-lg"></i></a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                 <ul class="nav navbar-nav">
-                    <li ui-sref-active="active"><a ui-sref="volume">Volume</a></li>
-                    <li ui-sref-active="active"><a ui-sref="mapa">Mapa</a></li>
-                    <li ui-sref-active="active"><a ui-sref="noticias">Notícias</a></li>
-                    <li ui-sref-active="active"><a ui-sref="sobre">Sobre</a></li>
-
-                </ul </div>
+                    <li ui-sref-active="active"><a ui-sref="mapa"><i class="fa fa-map-marker fa-2x"></i><b>&nbsp; &nbsp; Mapa</h3></b></a></li>
+                    <li ui-sref-active="active"><a ui-sref="noticias"><i class="fa fa-twitter fa-2x"></i><b>&nbsp; Notícias</b></a></li>
+                    <li ui-sref-active="active"><a ui-sref="sobre"> <i class="fa fa-info-circle fa-2x"></i><b>&nbsp; Sobre</b></a></li>
+                </ul>
             </div>
+        </div>
     </nav>
 
     <div class="spinner" ng-hide="isOn">
@@ -67,41 +53,8 @@
     <div ng-show="isOn">
         <ui-view></ui-view>
 
-        <div class="col-xs-12" ng-show="displayMap">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <div class="input-group ">
-                        <div class="checkbox badge">
-                            <label>
-                                <input ng-model="visualizar.vazamentos" type="checkbox"> Vazamentos
-                            </label>
-
-                            <label>
-                                <input ng-model="visualizar.faltasDeAgua" type="checkbox"> Faltas de Água
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="panel-body">
-
-                    <div id="map-container" class="row">
-                        <div id="map-canvas"></div>
-                    </div>
-
-                </div>
-                <div class="panel-footer">
-                </div>
-
-            </div>
-        </div>
-
         <div ng-show="displayNoticias">
 
-            <div class="col-xs-10 col-xs-offset-1" style="padding: 10px;">
-                <!-- Facebook Badge START -->
-                <div class="fb-page" data-href="https://www.facebook.com/&#xc1;guaNossa-1381791065449679/" data-tabs="timeline" data-height="300" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"></div>
-            </div>
             <div class="col-xs-10 col-xs-offset-1">
                 <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/aesagovpb" data-widget-id="651452839827480576">Tweets by @aesagovpb</a>
             </div>
@@ -139,6 +92,21 @@
         }(document, "script", "twitter-wjs");
     </script>
 
+    <!-- Navbar -->
+
+    <script>
+        $(document).ready(function () {
+            var navpos = $('#mainnav').offset();
+            console.log(navpos.top);
+            $(window).bind('scroll', function () {
+                if ($(window).scrollTop() > navpos.top) {
+                    $('#mainnav').addClass('navbar-fixed-top');
+                } else {
+                    $('#mainnav').removeClass('navbar-fixed-top');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

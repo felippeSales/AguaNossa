@@ -1,6 +1,7 @@
 var app = angular.module('AguaNossa', ['angularSpinner', 'AguaNossa.controllers','ui.router']);
 
 var heatmap;
+var map;
 var markers = [];
 var lat_lng_array = {
     faltaDeAgua: [],
@@ -17,12 +18,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
     .state('volume', {
         url: '/',
-        templateUrl: 'templates/volume.html'   
+        templateUrl: 'templates/volume.html'
     })
     
     .state('mapa', {
         url: '/mapa',
-        templateUrl: 'templates/mapa.html'   
+        templateUrl: 'templates/mapa.html'
     })
     
     .state('noticias', {

@@ -1,5 +1,6 @@
 package com.example.felipesales.aguanossa;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
@@ -31,6 +32,7 @@ private FrameLayout mContainer;
 private long mLastBackPressTime = 0;
 private Toast mToast;
 
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 @Override
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -48,6 +50,10 @@ protected void onCreate(Bundle savedInstanceState) {
     webSettings.setAppCacheEnabled(true);
     webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
     webSettings.setSupportMultipleWindows(true);
+
+    webSettings.setAllowFileAccessFromFileURLs(true);
+    webSettings.setAllowUniversalAccessFromFileURLs(true);
+
    // webSettings.setBuiltInZoomControls(true);
     webSettings.setDisplayZoomControls(false);
     mWebview.setWebViewClient(new UriWebViewClient());

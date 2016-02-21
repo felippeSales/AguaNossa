@@ -10,7 +10,7 @@ angular.module('AguaNossa.controllers', [])
     $scope.chartConfig.textVertPosition = 0.5;
     $scope.chartConfig.waveAnimateTime = 1500;
     $scope.chartConfig.waveCount = 3;
-    $rootScope.displayMap = false;
+    
     $rootScope.displayNoticias = false;
 
     $http.get("https://contribuatestes.lsd.ufcg.edu.br/aguanossa-backend/get_volume_boqueirao")
@@ -24,30 +24,15 @@ angular.module('AguaNossa.controllers', [])
 
 })
 
-.controller('Mapa', function ($scope, $rootScope) {
-    $rootScope.displayMap = true;
-    $rootScope.displayNoticias = false;
-    google.maps.event.trigger(map, "resize");
-})
-
-.controller('Noticias', function ($scope, $rootScope) {
-    $rootScope.displayMap = false;
-    $rootScope.displayNoticias = true;
-})
-
-.controller('Sobre', function ($scope, $rootScope) {
-    $rootScope.displayMap = false;
-    $rootScope.displayNoticias = false;
-})
-
-.controller('Main', function ($scope, $rootScope, $http) {
-
+.controller('Mapa', function ($scope, $rootScope, $http) {
+    
     $scope.faltasDeAgua = 0;
     $scope.vazamentos = 0;
     $scope.notifications = {};
     $scope.visualizar = {};
-    $rootScope.isOn = true;
-
+    
+    $rootScope.displayNoticias = false;
+    
     $scope.initialize = function () {
 
         setInterval($scope.loadNotifications, UPDATE_INTERVAL);
@@ -63,7 +48,7 @@ angular.module('AguaNossa.controllers', [])
 
     $scope.loadNotifications = function () {
 
-        $scope.checkConnection();
+        $rootScope.checkConnection();
 
         deleteMarkers();
         lat_lng_array = {
@@ -120,28 +105,9 @@ angular.module('AguaNossa.controllers', [])
 
         });
 
-    }
-
-    $scope.checkConnection = function () {
-
-        $http.get("https://contribuatestes.lsd.ufcg.edu.br/aguanossa-backend/get_volume_boqueirao").
-        then(function (response) {
-            if ((response.status >= 200) && (response.status <= 304)) {
-                $rootScope.isOn = true;
-            } else {
-                $rootScope.isOn = false;
-            }
-        }, function (response) {
-            $rootScope.isOn = false;
-        })
-    }
-
-    $rootScope.$watch("isOn", function handle(newValue, oldValue) {
-        if (newValue && (!oldValue)) {
-            location.reload();
-        }
-    });
-
+    };
+    
+    
     $scope.$watch("visualizar.faltasDeAgua",
         function handle(newValue, oldValue) {
             if (newValue) {
@@ -172,9 +138,42 @@ angular.module('AguaNossa.controllers', [])
 
     $scope.initialize();
 
+    
 })
 
+.controller('Noticias', function ($scope, $rootScope) {
+    $rootScope.displayNoticias = true;
+})
 
+.controller('Sobre', function ($scope, $rootScope) {
+    $rootScope.displayNoticias = false;
+})
+
+.controller('Main', function ($scope, $rootScope, $http) {
+
+    $rootScope.isOn = true;
+
+    $rootScope.checkConnection = function () {
+
+        $http.get("https://contribuatestes.lsd.ufcg.edu.br/aguanossa-backend/get_volume_boqueirao").
+        then(function (response) {
+            if ((response.status >= 200) && (response.status <= 304)) {
+                $rootScope.isOn = true;
+            } else {
+                $rootScope.isOn = false;
+            }
+        }, function (response) {
+            $rootScope.isOn = false;
+        })
+    }
+
+    $rootScope.$watch("isOn", function handle(newValue, oldValue) {
+        if (newValue && (!oldValue)) {
+            location.reload();
+        }
+    });
+
+})
 
 //Aux functions
 
