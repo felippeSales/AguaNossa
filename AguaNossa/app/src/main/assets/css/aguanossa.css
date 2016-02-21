@@ -10,6 +10,7 @@
 
 body {
    background-color: #c3e2ec;
+   overflow-x: hidden;
 }
 #map-container {
 	padding: 15px;
