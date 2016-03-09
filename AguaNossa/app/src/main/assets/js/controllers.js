@@ -1,3 +1,17 @@
+var heatmap;
+var map;
+var markers = [];
+var lat_lng_array = {
+    faltaDeAgua: [],
+    vazamentos: []
+};
+
+var FALTA_MARKER_ICON = "img/aguanossa-marker.png";
+var VAZAMENTO_MARKER_ICON = "img/vazamento-marker.png";
+var UPDATE_INTERVAL_NOTIFICATIONS = 30000;
+var UPDATE_INTERVAL_CONNECTION = 5000;
+
+
 angular.module('AguaNossa.controllers', [])
 
 .controller('Volume', function ($scope, $rootScope, $http) {
@@ -24,7 +38,7 @@ angular.module('AguaNossa.controllers', [])
 
 })
 
-.controller('Mapa', function ($scope, $rootScope, $http) {
+.controller('Mapa', function ($scope, $rootScope, $http, $interval) {
     
     $scope.faltasDeAgua = 0;
     $scope.vazamentos = 0;
@@ -35,7 +49,7 @@ angular.module('AguaNossa.controllers', [])
     
     $scope.initialize = function () {
 
-        setInterval($scope.loadNotifications, UPDATE_INTERVAL);
+        $interval($scope.loadNotifications, UPDATE_INTERVAL_NOTIFICATIONS);
         $scope.loadNotifications();
 
         if ($rootScope.isOn) {
@@ -48,7 +62,8 @@ angular.module('AguaNossa.controllers', [])
 
     $scope.loadNotifications = function () {
 
-        $rootScope.checkConnection();
+        console.log("Notifications");
+        //$rootScope.checkConnection();
 
         deleteMarkers();
         lat_lng_array = {
@@ -107,7 +122,6 @@ angular.module('AguaNossa.controllers', [])
 
     };
     
-    
     $scope.$watch("visualizar.faltasDeAgua",
         function handle(newValue, oldValue) {
             if (newValue) {
@@ -155,12 +169,15 @@ angular.module('AguaNossa.controllers', [])
 
     $rootScope.checkConnection = function () {
 
+        console.log("checking")
         $http.get("https://contribuatestes.lsd.ufcg.edu.br/aguanossa-backend/get_volume_boqueirao").
         then(function (response) {
             if ((response.status >= 200) && (response.status <= 304)) {
                 $rootScope.isOn = true;
             } else {
-                $rootScope.isOn = false;
+                $rootScope.isOn = false
+                
+                
             }
         }, function (response) {
             $rootScope.isOn = false;
@@ -173,6 +190,7 @@ angular.module('AguaNossa.controllers', [])
         }
     });
 
+    setInterval($rootScope.checkConnection,UPDATE_INTERVAL_CONNECTION);
 })
 
 //Aux functions

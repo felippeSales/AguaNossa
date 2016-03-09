@@ -1,18 +1,5 @@
 var app = angular.module('AguaNossa', ['angularSpinner', 'AguaNossa.controllers','ui.router']);
 
-var heatmap;
-var map;
-var markers = [];
-var lat_lng_array = {
-    faltaDeAgua: [],
-    vazamentos: []
-};
-
-var FALTA_MARKER_ICON = "img/aguanossa-marker.png";
-var VAZAMENTO_MARKER_ICON = "img/vazamento-marker.png";
-var UPDATE_INTERVAL = 10000;
-
-
 app.config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
 
